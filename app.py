@@ -1,5 +1,5 @@
 import pandas as pd
-
+from datetime import date
 
 with open("archive.txt", 'r', encoding="utf-8") as arquivo:
     lista_datas = []
@@ -25,9 +25,9 @@ with open("archive.txt", 'r', encoding="utf-8") as arquivo:
                             lista_produtos.append(valor)
                 lista_quantidade.append(sum(lista_numeros))
                 lista_numeros.clear()
-                dados = {'Produtos':lista_produtos, 'Quantidade':lista_quantidade}
-                df = pd.DataFrame(dados)
-                print(df)
+                lista_datas.append(data_string)
+
+
             else:
                 if "Dia" not in v:
                     v = v.replace('kg','').split(' ')
@@ -35,9 +35,20 @@ with open("archive.txt", 'r', encoding="utf-8") as arquivo:
                         if valor2 == '':
                             pass
                         else:
+                            # if valor2 == 'Mamão' or valor2 == 'Formosa':
+                            #     lista_produto_medio.append(valor2)
                             if valor2.isnumeric():
                                 lista_quantidade.append(valor2)
                             else:
+
                                 lista_produtos.append(valor2)
+                    lista_datas.append(data_string)
+
+                    dados = {'Produtos': lista_produtos, 'Quantidade': lista_quantidade, 'Data': lista_datas}
+                    df = pd.DataFrame(dados)
+                    print(df)
+
                 else:
-                    lista_datas.append(v)
+                    if "Dia" in v:
+                        data_atual = date.today()
+                        data_string = data_atual.strftime("%d-%m-%Y")
