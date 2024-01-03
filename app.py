@@ -1,7 +1,8 @@
 import pandas as pd
 from datetime import date
 
-with open("archive.txt", 'r', encoding="utf-8") as arquivo:
+with open("alo.txt", 'r', encoding="utf-8") as arquivo:
+    lista_frutas = ['Melancia', 'Melão', 'Melão Português', 'Mamão Avai', 'Mamão Formosa', 'Melão Japonês', 'Jerimum']
     lista_datas = []
     lista_produtos = []
     lista_quantidade = []
@@ -11,7 +12,10 @@ with open("archive.txt", 'r', encoding="utf-8") as arquivo:
         # Exclua os elementos que contêm "[" ou "]"
         dados_sem_colchetes = [linha for linha in valor if all('[' not in item and ']' not in item for item in linha)]
         for i ,v in enumerate(dados_sem_colchetes):
+            data_atual = date.today()
+            data_string = data_atual.strftime("%d-%m-%Y")
             if '+' in dados_sem_colchetes[i]:
+
                 v= v.replace('kg','').replace('kl', '').replace('+',' ').split(' ')
                 lista_numeros = []
                 for valor in v:
@@ -47,27 +51,42 @@ with open("archive.txt", 'r', encoding="utf-8") as arquivo:
                                         lista_quantidade.append(valor2)
                                 else:
                                     if valor2.isalpha():
+                                        valor2 = valor2.capitalize()
                                         if valor2 == 'e':
                                             lista_produtos.append(*lista_produto_minimo)
                                             lista_datas.append(data_string)
                                             lista_produto_minimo.clear()
                                         else:
-                                            lista_produto_minimo.append(valor2)
-
+                                            if valor2 in lista_frutas:
+                                                if valor2 == 'Melão' or valor2 == 'Melao':
+                                                    valor2 = 'Melão Espanhol'
+                                                    lista_produto_minimo.append(valor2.capitalize())
+                                                else:
+                                                    lista_produto_minimo.append(valor2.capitalize())
+                                            else:
+                                                if valor2 == 'Formosa' and len(lista_produto_minimo) ==0:
+                                                    valor2 = 'Mamão Formosa'
+                                                    lista_produto_minimo.append(valor2.capitalize())
+                                                else:
+                                                    if valor2 == 'Melào':
+                                                        valor2 = 'Melão'
+                                                        lista_produto_minimo.append(valor2.capitalize())
+                                                    elif valor2 == 'Espanho':
+                                                        valor2 = 'Espanhol'
+                                                        lista_produto_minimo.append(valor2.capitalize())
+                                                    else:
+                                                        lista_produto_minimo.append(valor2.capitalize())
                                     else:
                                         pass
 
                         if len(lista_produto_minimo) > 1:
-                            lista_produtos.append(f"{lista_produto_minimo[0]} {lista_produto_minimo[1]}")
+                            lista_produtos.append(f"{lista_produto_minimo[0]} {lista_produto_minimo[1].lower()}")
                         else:
                             lista_produtos.append(*lista_produto_minimo)
                         lista_datas.append(data_string)
 
-                else:
-                    if "dia" in v:
-                        data_atual = date.today()
-                        data_string = data_atual.strftime("%d-%m-%Y")
 
     dados = {'Produtos': lista_produtos, 'Quantidade': lista_quantidade, 'Data': lista_datas}
     df = pd.DataFrame(dados)
+    df.to_excel('arquivo2.xlsx')
     print(df)
