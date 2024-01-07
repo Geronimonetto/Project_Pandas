@@ -56,6 +56,7 @@ def recebendo_dados(file):
 
             else:
                 if "Dia" in v:
-                    v = v.lstrip().split(' ')
-                    if v[1] == '1':
-                        lista_datas.append(datas[0])
+                    pass
+                    # v = v.lstrip().split(' ')
+                    # if v[1] == '1':
+                    #     lista_datas.append(datas[0])
