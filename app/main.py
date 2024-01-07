@@ -1,11 +1,9 @@
 import pandas as pd
 from datetime import date
+from ..lists import datas, lista_produtos, lista_quantidade, lista_datas
 
 with open("../janeiro01.txt", 'r', encoding="utf-8") as arquivo:
     lista_frutas = ['Melancia', 'Melão', 'Melão Português', 'Mamão Avai', 'Mamão Formosa', 'Melão Japonês', 'Jerimum']
-    lista_datas = []
-    lista_produtos = []
-    lista_quantidade = []
     for valor in arquivo:
 
         valor = valor.replace("\n" ,"").split(":")
@@ -33,10 +31,10 @@ with open("../janeiro01.txt", 'r', encoding="utf-8") as arquivo:
 
 
             else:
-                v = v.replace('kg', '').replace('kl','').lower()
+                v = v.replace('kg', '').replace('kl', '').lower()
                 if 'dia' not in v:
                     if 'boa noite' not in v:
-                        v = v.replace('kg','').split(' ')
+                        v = v.replace('kg', '').split(' ')
                         lista_produto_minimo = []
                         for valor2 in v:
                             if valor2 == '':
@@ -54,7 +52,7 @@ with open("../janeiro01.txt", 'r', encoding="utf-8") as arquivo:
                                         valor2 = valor2.capitalize()
                                         if valor2 == 'e':
                                             lista_produtos.append(*lista_produto_minimo)
-                                            lista_datas.append(data_string)
+                                            lista_datas.append(datas[0])
                                             lista_produto_minimo.clear()
                                         else:
                                             if valor2 in lista_frutas:
@@ -64,7 +62,7 @@ with open("../janeiro01.txt", 'r', encoding="utf-8") as arquivo:
                                                 else:
                                                     lista_produto_minimo.append(valor2.capitalize())
                                             else:
-                                                if valor2 == 'Formosa' and len(lista_produto_minimo) ==0:
+                                                if valor2 == 'Formosa' and len(lista_produto_minimo) == 0:
                                                     valor2 = 'Mamão Formosa'
                                                     lista_produto_minimo.append(valor2.capitalize())
                                                 else:
@@ -83,7 +81,7 @@ with open("../janeiro01.txt", 'r', encoding="utf-8") as arquivo:
                             lista_produtos.append(f"{lista_produto_minimo[0]} {lista_produto_minimo[1].lower()}")
                         else:
                             lista_produtos.append(*lista_produto_minimo)
-                        lista_datas.append(data_string)
+                        lista_datas.append(datas[0])
 
 
     dados = {'Produtos': lista_produtos, 'Quantidade': lista_quantidade, 'Data': lista_datas}

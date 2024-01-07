@@ -10,7 +10,7 @@ def data_convert(value: str) -> object:
     datas.append(data_converter)
 
 def recebendo_dados(file):
-
+    lista_frutas = ['Melancia', 'Melão', 'Melão Português', 'Mamão Avai', 'Mamão Formosa', 'Melão Japonês', 'Jerimum']
     for i, v in enumerate(file):
         if '+' in file[i]:
             v = v.replace('kg', '').replace('+', ' ').split(' ')
@@ -30,34 +30,54 @@ def recebendo_dados(file):
 
 
         else:
-            if "Dia" not in v:
-                v = v.replace('kg', '').split(' ')
-                lista_produto_minimo = []
-                for valor2 in v:
-                    if valor2 == '':
-                        pass
-                    else:
-                        if valor2.isnumeric():
-                            if valor2 == '1':
-                                valor2 = 2
-                                lista_quantidade.append(valor2)
-                            else:
-                                lista_quantidade.append(int(valor2))
-                                continue
-                        if valor2.isalpha() or valor2 != 'e':
-                            lista_produto_minimo.append(valor2)
-                        else:
+            v = v.replace('kg', '').replace('kl', '').lower()
+            if 'dia' not in v:
+                if 'boa noite' not in v:
+                    v = v.replace('kg', '').split(' ')
+                    lista_produto_minimo = []
+                    for valor2 in v:
+                        if valor2 == '':
                             pass
+                        else:
+                            if valor2.isnumeric():
+                                if valor2 == '1':
+                                    valor2 = 2
+                                    lista_quantidade.append(valor2)
+                                else:
+                                    valor2 = int(valor2)
+                                    lista_quantidade.append(valor2)
+                            else:
+                                if valor2.isalpha():
+                                    valor2 = valor2.capitalize()
+                                    if valor2 == 'e':
+                                        lista_produtos.append(*lista_produto_minimo)
+                                        lista_datas.append(datas[0])
+                                        lista_produto_minimo.clear()
+                                    else:
+                                        if valor2 in lista_frutas:
+                                            if valor2 == 'Melão' or valor2 == 'Melao':
+                                                valor2 = 'Melão Espanhol'
+                                                lista_produto_minimo.append(valor2.capitalize())
+                                            else:
+                                                lista_produto_minimo.append(valor2.capitalize())
+                                        else:
+                                            if valor2 == 'Formosa' and len(lista_produto_minimo) == 0:
+                                                valor2 = 'Mamão Formosa'
+                                                lista_produto_minimo.append(valor2.capitalize())
+                                            else:
+                                                if valor2 == 'Melào':
+                                                    valor2 = 'Melão'
+                                                    lista_produto_minimo.append(valor2.capitalize())
+                                                elif valor2 == 'Espanho':
+                                                    valor2 = 'Espanhol'
+                                                    lista_produto_minimo.append(valor2.capitalize())
+                                                else:
+                                                    lista_produto_minimo.append(valor2.capitalize())
+                                else:
+                                    pass
 
-                if len(lista_produto_minimo) > 1:
-                    lista_produtos.append(f"{lista_produto_minimo[0]} {lista_produto_minimo[1]}")
-                else:
-                    lista_produtos.append(*lista_produto_minimo)
-                lista_datas.append(datas[0])
-
-            else:
-                if "Dia" in v:
-                    pass
-                    # v = v.lstrip().split(' ')
-                    # if v[1] == '1':
-                    #     lista_datas.append(datas[0])
+                    if len(lista_produto_minimo) > 1:
+                        lista_produtos.append(f"{lista_produto_minimo[0]} {lista_produto_minimo[1].lower()}")
+                    else:
+                        lista_produtos.append(*lista_produto_minimo)
+                    lista_datas.append(datas[0])
