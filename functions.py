@@ -43,6 +43,7 @@ def recebendo_dados(file):
                                 lista_quantidade.append(valor2)
                             else:
                                 lista_quantidade.append(int(valor2))
+                                continue
                         if valor2.isalpha() or valor2 != 'e':
                             lista_produto_minimo.append(valor2)
                         else:
@@ -52,7 +53,7 @@ def recebendo_dados(file):
                     lista_produtos.append(f"{lista_produto_minimo[0]} {lista_produto_minimo[1]}")
                 else:
                     lista_produtos.append(*lista_produto_minimo)
-                # lista_datas.append(data_string)
+                lista_datas.append(datas[0])
 
             else:
                 if "Dia" in v:

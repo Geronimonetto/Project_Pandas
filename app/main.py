@@ -1,7 +1,7 @@
 import pandas as pd
 from datetime import date
 
-with open("../alo.txt", 'r', encoding="utf-8") as arquivo:
+with open("../janeiro01.txt", 'r', encoding="utf-8") as arquivo:
     lista_frutas = ['Melancia', 'Melão', 'Melão Português', 'Mamão Avai', 'Mamão Formosa', 'Melão Japonês', 'Jerimum']
     lista_datas = []
     lista_produtos = []
